@@ -1,0 +1,93 @@
+using System;
+
+class MainClass {
+  private static NAluno naluno = new NAluno();
+  private static NMatricula nmatricula = new NMatricula();
+  public static void Main() {
+    int op = 0;
+    Console.WriteLine ("----- Sistema Escolar ------");
+    do {
+      try {
+        op = Menu();
+        switch(op) {
+          case 1 : AlunoListar(); break;
+          case 2 : AlunoInserir(); break;
+          case 3 : MatriculaListar(); break;
+          case 4 : MatriculaInserir(); break;
+        }
+      }
+      catch (Exception erro) {
+        Console.WriteLine(erro.Message);
+        op = 100;
+      }
+    } while (op != 0);
+    Console.WriteLine ("Bye.....");    
+  }
+  public static int Menu() {
+    Console.WriteLine();
+    Console.WriteLine("----------------------------------");
+    Console.WriteLine("1 - Aluno - Listar");
+    Console.WriteLine("2 - Aluno - Inserir");
+    Console.WriteLine("3 - Matricula - Listar");
+    Console.WriteLine("4 - Matricula - Inserir");
+    Console.WriteLine("0 - Fim");
+    Console.Write("Informe uma opção: ");
+    int op = int.Parse(Console.ReadLine());
+    Console.WriteLine();
+    return op; 
+  }
+  public static void AlunoListar() {
+    Console.WriteLine("----- Lista de Alunos -----");
+    Aluno[] cs = naluno.Listar();
+    if (cs.Length == 0) {
+      Console.WriteLine("Nenhum aluno cadastrado");
+      return;
+    }
+    foreach(Aluno c in cs) Console.WriteLine(c);
+    Console.WriteLine();  
+  }
+
+  public static void AlunoInserir() {
+    Console.WriteLine("----- Inserção de Alunos -----");
+    Console.Write("Informe um código para aluno: ");
+    int id = int.Parse(Console.ReadLine());
+    Console.Write("Informe o nome: ");
+    string nome = Console.ReadLine();
+    Console.Write("Informe o endereço: ");
+    string endereco = Console.ReadLine();
+    Console.Write("Informe o telefone: ");
+    int telefone = int.Parse(Console.ReadLine());
+    // Instanciar a classe de aluno
+    Aluno c = new Aluno(id, nome, endereco, telefone);
+    // Inserção de aluno
+    naluno.Inserir(c);
+  }
+
+  public static void MatriculaListar() {
+    Console.WriteLine("----- Lista de Matriculas -----");
+    Matricula[] ms = nmatricula.Listar();
+    if (ms.Length == 0) {
+      Console.WriteLine("Nenhuma matricula cadastrado");
+      return;
+    }
+    foreach(Matricula m in ms) Console.WriteLine(m);
+    Console.WriteLine();  
+  }
+  public static void MatriculaInserir() {
+    Console.WriteLine("----- Inserção de Matriculas -----");
+    Console.Write("Informe um código para a matricula: ");
+    int id = int.Parse(Console.ReadLine());
+    Console.Write("Informe uma descrição: ");
+    string descricao = Console.ReadLine();
+    AlunoListar();
+    Console.Write("Informe o código da categoria da matricula: ");
+    int idaluno = int.Parse(Console.ReadLine());
+    // Seleciona o aluno a partir do id
+    Aluno c = naluno.Listar(idaluno);    
+    // Instanciar a classe de Matricula
+    Matricula m = new Matricula(id, descricao, c);
+    // Inserção das matriculas
+    nmatricula.Inserir(m);
+  }
+
+}
